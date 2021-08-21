@@ -1,6 +1,6 @@
 import Vue from "vue";
-import HelloWorld from "../components/HelloWorld.vue"
-import Test from "../components/test.vue"
+// import HelloWorld from "../components/HelloWorld.vue"
+// import Test from "../components/test.vue"
 class HistoryRoute {
   // 记录地址信息
   constructor() {
@@ -92,12 +92,12 @@ export default new vueRouter({
     {
       path: '/',
       name: '首页',
-      component: HelloWorld,
+      component: () => import(/* webpackChunkName: "report" */'../components/HelloWorld.vue'),
     },
     {
       path: '/test',
       name: '路由页1',
-      component: Test,
+      component: () => import(/* webpackChunkName: "report" */'../components/test.vue'),
     },
   ],
 });
