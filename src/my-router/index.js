@@ -92,12 +92,12 @@ export default new vueRouter({
     {
       path: '/',
       name: '首页',
-      component: () => import(/* webpackChunkName: "report" */'../components/HelloWorld.vue'),
+      component: () => import(/* webpackChunkName: "helloWorld" */'../components/HelloWorld.vue'),
     },
     {
       path: '/test',
       name: '路由页1',
-      component: () => import(/* webpackChunkName: "report" */'../components/test.vue'),
+      component: () => import(/* webpackChunkName: "test" */'../components/test.vue'),
     },
   ],
 });
