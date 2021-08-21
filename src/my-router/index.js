@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 class HistoryRoute {
   // 记录地址信息
   constructor() {
@@ -26,6 +28,42 @@ class vueRouter {
       };
     }
   }
+}
+
+// vue插件的实现，use以后会调用
+// 为保证路由唯一，需要使用单例模式
+let _vue;
+vueRouter.install = function(vue) {
+  if(_vue ==vue && vueRouter.install.isntalled) {
+    return;
+  } 
+  Vue.mixin({
+    beforeCreate() {
+      // this指向当前组件
+      if(this.$options&&this.options.router) {
+        // 只有main.js里面的根组件才会传入router
+        this._root = this;
+        this._router = this.options.router;
+        // 将current变量变为响应式的，只需在根组件中调用一次
+        Vue.util.defineReactive(this, "current", this._router.history.current)
+      } else {
+        // 给所有组件都添加一个_root,指向根实例
+        this._root = this.$parent._root;
+      }
+      Object.defineProperty(vue.prototype, "$router", {
+        // 这里只设置get，防止其他地方更改$router
+        get: function() {
+          return this._root._router;
+        }
+      })
+      Object.defineProperty(vue.prototype, "$route", {
+        // 这里只设置get，防止其他地方更改$router
+        get: function() {
+          return this._root._router.history;
+        }
+      })
+    }
+  })
 }
 
 export default vueRouter;
