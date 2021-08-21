@@ -1,19 +1,31 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+class HistoryRoute {
+  // 记录地址信息
+  constructor() {
+    this.current = null;
+  }
+}
 
-Vue.use(Router);
+class vueRouter {
+  constructor(options) {
+    // 默认模式为hash
+    this.mode = options.mode || "hash";
+    this.routes = options.routes || [];
+    // 记录地址的对象
+    this.history = new HistoryRoute();
+    // 实现hashchange的监听
+    this.init();
+  }
+  init() {
+    if(this.mode === "hash") {
+      location.hash?"":location.hash="/";
+      window.onload = () => {
+        this.history.current = location.hash.slice(1)
+      };
+      window.onhashchange = () => {
+        this.history.current = location.hash.slice(1)
+      };
+    }
+  }
+}
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: '首页',
-      component: () => import(/* webpackChunkName: "report" */'../components/HelloWorld.vue'),
-    },
-    {
-      path: '/test',
-      name: '路由页1',
-      component: () => import(/* webpackChunkName: "report" */'../components/test.vue'),
-    },
-  ],
-});
+export default vueRouter;
